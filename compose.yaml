@@ -1,0 +1,28 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+
+  pg:
+    image: postgres:17
+    hostname: pg
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+
+  pg-migrate:
+    build:
+      context: schema
+      dockerfile: Dockerfile
+    command: |
+      -url=jdbc:postgresql://pg:5432/postgres
+      -user=postgres
+      -password=postgres
+      -baselineOnMigrate=true
+      migrate
+    depends_on:
+      - pg

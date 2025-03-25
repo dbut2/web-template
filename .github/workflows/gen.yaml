@@ -1,0 +1,38 @@
+name: Go Generate Check
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  go-generate-check:
+    name: Go Generate Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: ./go.mod
+
+      - name: Install dependencies
+        run: |
+          go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
+          go install github.com/a-h/templ/cmd/templ@latest
+
+      - name: Run go generate
+        run: go generate ./...
+
+      - name: Check for modified files
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "::error::Running 'go generate ./...' produced modified files. Please run it locally and commit the changes."
+            git status
+            git diff
+            exit 1
+          fi
+          echo "No modified files detected. All generated files are up to date!"
