@@ -3,7 +3,7 @@ module dbut.dev/web-template
 go 1.24.1
 
 require (
-	github.com/a-h/templ v0.3.894
+	github.com/a-h/templ v0.3.898
 	github.com/gin-gonic/gin v1.10.1
 	github.com/lib/pq v1.10.9
 )
