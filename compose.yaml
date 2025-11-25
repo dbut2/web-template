@@ -7,7 +7,7 @@ services:
       - "8080:8080"
 
   pg:
-    image: postgres:17
+    image: postgres:18
     hostname: pg
     environment:
       POSTGRES_USER: postgres
