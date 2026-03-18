@@ -5,7 +5,7 @@ A lightweight, modern template for building web applications with Go, PostgreSQL
 ## Features
 
 - **Go Backend**: Uses Gin for routing and API endpoints
-- **PostgreSQL Database**: With Flyway migrations for schema management
+- **PostgreSQL Database**: With Goose migrations for schema management
 - **Type-safe Database Access**: Generated with sqlc
 - **HTML Templating**: Using the modern templ templating engine
 - **Docker Integration**: Containerized for easy deployment
@@ -30,16 +30,16 @@ A lightweight, modern template for building web applications with Go, PostgreSQL
 - `/go` - Backend Go code
   - `/database` - Database access with sqlc-generated code
   - `/service` - HTTP service with handlers and API endpoints
-- `/schema` - Database schema and migrations
-  - `/migrations` - Flyway SQL migrations
-  - `queries.sql` - SQL queries for sqlc generation
+- `/db` - Database schema and migrations
+  - `/migrations` - Goose SQL migrations
+  - `/queries` - SQL queries for sqlc generation
 - `/web` - Frontend templates using templ
 
 ## Development
 
 ### Prerequisites
 
-- Go 1.24+
+- Go 1.26+
 - Docker
 
 ### Build Commands
@@ -51,7 +51,7 @@ A lightweight, modern template for building web applications with Go, PostgreSQL
 
 - Generate database code:
   ```
-  go generate ./schema
+  go generate ./db
   ```
 
 - Build the application:
