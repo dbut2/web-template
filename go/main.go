@@ -17,11 +17,7 @@ import (
 func main() {
 	dbConnString := os.Getenv("DATABASE_DSN")
 
-	connConfig, err := pq.ParseURL(dbConnString)
-	if err != nil {
-		panic(err.Error())
-	}
-	conn, err := pq.NewConnector(connConfig)
+	conn, err := pq.NewConnector(dbConnString)
 	if err != nil {
 		panic(err.Error())
 	}
