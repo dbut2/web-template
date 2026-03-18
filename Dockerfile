@@ -2,22 +2,22 @@ FROM golang:alpine AS builder
 
 WORKDIR /app
 
-COPY ./go.mod ./go.mod
-COPY ./go.sum ./go.sum
+COPY go.mod go.sum ./
+RUN go mod download
 
-COPY ./schema ./schema
+COPY ./db ./db
 COPY ./web ./web
 COPY ./go ./go
 
-RUN go build -o /server ./go
+RUN go build -o /bin/server ./go
 
 FROM alpine
 
 WORKDIR /app
 
-COPY --from=builder /server ./server
+COPY --from=builder /bin/server /bin/server
 
 ARG PORT=8080
 EXPOSE ${PORT}
 
-CMD ["./server"]
+CMD ["/bin/server"]

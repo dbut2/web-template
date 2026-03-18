@@ -1,3 +1,0 @@
-name: web-template
-template: true
-description: "A simple Go template for web services using sqlc and templ"
