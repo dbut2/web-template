@@ -5,34 +5,13 @@ on:
     branches:
       - main
   pull_request:
+  merge_group:
+
+permissions:
+  contents: read
 
 jobs:
-  test:
-    name: Go Test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v6
-
-      - name: Set up Go
-        uses: actions/setup-go@v6
-        with:
-          go-version-file: ./go.mod
-
-      - name: Run tests
-        run: go test -v ./...
-
-  lint:
-    name: golangci-lint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v6
-
-      - name: Set up Go
-        uses: actions/setup-go@v6
-        with:
-          go-version-file: ./go.mod
-
-      - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v9
+  quality:
+    uses: dbut2/x/.github/workflows/quality-go.yaml@main
+  docker:
+    uses: dbut2/x/.github/workflows/quality-docker.yaml@main

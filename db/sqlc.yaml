@@ -1,8 +1,8 @@
 version: "2"
 sql:
   - engine: "postgresql"
-    schema: "schema.sql"
-    queries: "queries.sql"
+    schema: "./migrations"
+    queries: "./queries"
     gen:
       go:
         sql_driver: "github.com/lib/pq"

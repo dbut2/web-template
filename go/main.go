@@ -3,16 +3,19 @@ package main
 import (
 	"context"
 	"database/sql"
+	"os"
 	"time"
 
 	"github.com/lib/pq"
+	"github.com/pressly/goose/v3"
 
+	migrations "dbut.dev/web-template/db"
 	"dbut.dev/web-template/go/database"
 	"dbut.dev/web-template/go/service"
 )
 
 func main() {
-	dbConnString := "postgres://postgres:postgres@pg:5432/postgres?sslmode=disable"
+	dbConnString := os.Getenv("DATABASE_DSN")
 
 	connConfig, err := pq.ParseURL(dbConnString)
 	if err != nil {
@@ -31,9 +34,23 @@ func main() {
 		panic(err.Error())
 	}
 
+	err = runMigrations(db)
+	if err != nil {
+		panic(err.Error())
+	}
+
 	svc := service.New(database.New(db))
 	err = svc.Run(context.Background())
 	if err != nil {
 		panic(err.Error())
 	}
+}
+
+func runMigrations(db *sql.DB) error {
+	goose.SetBaseFS(migrations.Migrations)
+	goose.SetTableName("myapp.goose_db_version")
+	if err := goose.SetDialect("postgres"); err != nil {
+		return err
+	}
+	return goose.Up(db, "")
 }
